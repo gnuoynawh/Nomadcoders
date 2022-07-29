@@ -1,1 +1,1 @@
-# study-js-momentum
+# study-nomad-js
