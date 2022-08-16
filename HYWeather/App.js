@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
 
 const { width:SCREEN_WIDTH } = Dimensions.get("window");
-const API_KEY = "";
+const API_KEY = "cadb318b1fc61f1f46bc36916855e4f3";
 
 export default function App() {
 
@@ -15,29 +15,37 @@ export default function App() {
   const getWeather = async() => {
      
     let {granted} = await Location.requestForegroundPermissionsAsync();
-     //console.log(granted);
+    console.log(granted);
 
-     if (!granted) {
-        setOk(false);
-     }
+    if (!granted) {
+      setOk(false);
+    }
 
-     const {
-        coords: { latitude, longitude },
-     } = await Location.getCurrentPositionAsync({accuracy:5})
+    const {
+      coords: { latitude, longitude },
+    } = await Location.getCurrentPositionAsync({accuracy:5})
 
-     let location = await Location.reverseGeocodeAsync(
-        { latitude, longitude },
-        { useGoogleMaps: false }
-     );
+    let location = await Location.reverseGeocodeAsync(
+      { latitude, longitude },
+      { useGoogleMaps: false }
+    );
 
-     //console.log(location);
-     setCity(location[0].city);
-     
-     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
-     const json = await response.json();
+    console.log(location);
+    setCity(location[0].city);
 
-     console.log(json);
+    //Call current weather data (https://openweathermap.org/current)
+    //const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
 
+    //5 day weather forecast (https://openweathermap.org/forecast5)
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`)
+
+    //One Call API 3.0 >> {"cod": 401, "message": "Invalid API key. Please see http://openweathermap.org/faq#error401 for more info."}
+    //const response = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts&appid=${API_KEY}`)
+    const json = await response.json();
+
+    const list = json.list;
+    console.log(json.list);
+    setDays(json.list);
   }
 
   useEffect(() => {
@@ -55,22 +63,28 @@ export default function App() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.weather}
       >
-        <View style={styles.day}>
-          <Text style={styles.temp}>27</Text>
-          <Text style={styles.description}>Sunny</Text>
-        </View>
-        <View style={styles.day}>
-          <Text style={styles.temp}>27</Text>
-          <Text style={styles.description}>Sunny</Text>
-        </View>
-        <View style={styles.day}>
-          <Text style={styles.temp}>27</Text>
-          <Text style={styles.description}>Sunny</Text>
-        </View>
-        <View style={styles.day}>
-          <Text style={styles.temp}>27</Text>
-          <Text style={styles.description}>Sunny</Text>
-        </View>
+
+        { days.length === 0 ? (
+          <View style={styles.day}>
+            <ActivityIndicator 
+              color="white"
+              style={{ marginTop: 10 }} 
+              size="large" 
+            />
+          </View>
+        ): (
+          days.map((day, index) => {
+              const temp = parseFloat(day.main.temp).toFixed(1);
+              const desc = JSON.parse(JSON.stringify(day.weather));
+
+              return <View key={index} style={styles.day}>
+                <Text style={styles.temp}>{temp}</Text>
+                <Text style={styles.description}>{desc[0].main}</Text>
+              </View>
+            }
+          )
+        )}
+        
       </ScrollView>
     </View>
   );
