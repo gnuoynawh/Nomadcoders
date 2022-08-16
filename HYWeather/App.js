@@ -80,6 +80,7 @@ export default function App() {
               return <View key={index} style={styles.day}>
                 <Text style={styles.temp}>{temp}</Text>
                 <Text style={styles.description}>{desc[0].main}</Text>
+                <Text style={styles.tinyText}>{desc[0].description}</Text>
               </View>
             }
           )
@@ -118,5 +119,8 @@ const styles = StyleSheet.create({
   description: {
     marginTop: -30,
     fontSize: 60,
+  },
+  tinyText: {
+    fontSize: 20,
   },
 });
