@@ -2,9 +2,20 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
+import { Fontisto } from '@expo/vector-icons'; 
 
 const { width:SCREEN_WIDTH } = Dimensions.get("window");
 const API_KEY = "cadb318b1fc61f1f46bc36916855e4f3";
+
+const icons = {
+  Clear: "day-sunny",
+  Clouds: "cloudy",
+  Rain: "rain",
+  Atmosphere: "cloudy-gusts",
+  Snow: "snow",
+  Drizzle: "day-rain",
+  Thunderstorm: "lightning",
+}
 
 export default function App() {
 
@@ -78,7 +89,18 @@ export default function App() {
               const desc = JSON.parse(JSON.stringify(day.weather));
 
               return <View key={index} style={styles.day}>
-                <Text style={styles.temp}>{temp}</Text>
+                <View 
+                  style={{ 
+                    flexDirection: "row", 
+                    alignItems:"center", 
+                    justifyContent:"space-between",
+                    width:"100%" 
+                  }}
+                 >
+                  <Text style={styles.temp}>{temp}</Text>
+                  <Fontisto name={icons[desc[0].main]} size={68} color="white" />
+                </View>
+                
                 <Text style={styles.description}>{desc[0].main}</Text>
                 <Text style={styles.tinyText}>{desc[0].description}</Text>
               </View>
