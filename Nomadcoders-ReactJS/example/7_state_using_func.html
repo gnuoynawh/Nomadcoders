@@ -1,0 +1,41 @@
+<!--
+    react : https://reactjs.org/docs/add-react-to-a-website.html
+    babel (jsx) : https://babeljs.io/docs/en/
+-->
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+
+    <!--
+        - state 의 Setter 함수에 값을 넣을때 
+          함수형태로 값을 넣을수있음.
+    -->
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const root = document.getElementById("root");
+        let counter = 0;
+
+        function App() {
+            const [counter, setCounter] = React.useState(0);
+            const onClick = () => {
+                //setCounter(counter + 1);
+                setCounter((current) => current + 1);
+            }
+
+            return (
+                <div>
+                    <h3>Total clicks: {counter}</h3>
+                    <button onClick={onClick}>Click me</button>
+                </div>
+            );
+        }
+        
+        ReactDOM.render(<App />, root);
+    </script>
+</html>

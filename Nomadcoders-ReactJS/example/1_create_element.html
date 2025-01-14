@@ -1,0 +1,29 @@
+<!--
+    react : https://reactjs.org/docs/add-react-to-a-website.html
+    babel (jsx) : https://babeljs.io/docs/en/
+-->
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+
+    <!--
+        - 리액트 추가
+        - 리액트로 element 만들기
+        - 리액트 돔으로 렌더링
+    -->
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+    <script>
+        const root = document.getElementById("root");
+        const span = React.createElement(
+            "span", 
+            { id:"sexy-span", style: {color: "red"} }, 
+            "Hello I'm a span"
+        );
+        ReactDOM.render(span, root);
+    </script>
+</html>

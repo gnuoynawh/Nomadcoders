@@ -1,0 +1,59 @@
+<!--
+    react : https://reactjs.org/docs/add-react-to-a-website.html
+    babel (jsx) : https://babeljs.io/docs/en/
+-->
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+
+    <!--
+        propTypes 용 코드 추가 : https://unpkg.com/prop-types@15.7.2/prop-types.js
+        
+        작성하고자 하는 props 에 타입을 지정해줄 수 있음.
+        .isRequired 가 붙으면 필수값, 없으면 옵셔널
+    -->
+
+    <script src="https://unpkg.com/react@17.0.2/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+
+    <script type="text/babel">
+        function Btn(props) {
+            return (
+                <button 
+                    onClick={props.changeValue}
+                    style={{
+                        backgroundColor: "tomato",
+                        color: "white",
+                        padding: "10px 20px",
+                        border: 0,
+                        borderRadius: 10,
+                        fontSize: props.fontSize
+                    }}
+                >
+                    {props.text}
+                </button>
+            );
+        }
+
+        Btn.propTypes = {
+            text: PropTypes.string.isRequired,
+            fontSize: PropTypes.number,
+        }
+
+        function App() {
+            return (
+                <div>
+                    <Btn text="Save Changes" fontSize={18} />
+                    <Btn text="Continue" fontSize={14} />
+                </div>
+            )
+        };
+        
+        const root = document.getElementById("root");
+        ReactDOM.render(<App />, root);
+    </script>
+</html>
